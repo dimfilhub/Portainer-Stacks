@@ -63,5 +63,5 @@ There are .yaml files for the following services:
 There are some more README files to check with more details if needed.
 
 ### Please note:
-    Containers that need to communicate through VPN because of ISP or other restrictions are redirected to GlueTun as network mode in my use case. You can see that in Deluge, qBittorrent, Prowlarr, Jackett, NZBHydra2 and Flaresolverr. So, you have to first deploy GlueTun with settings for your VPN provider and then deploy each of the above. If VPN is not needed or required for your purposes, just change network mode to something else e.g. the bridge network you created.
+>Containers that need to communicate through VPN because of ISP or other restrictions are redirected to GlueTun as network mode in my use case. You can see that in Deluge, qBittorrent, Prowlarr, Jackett, NZBHydra2 and Flaresolverr. So, you have to first deploy GlueTun with settings for your VPN provider and then deploy each of the above. If VPN is not needed or required for your purposes, just change network mode to something else e.g. the bridge network you created.
 
