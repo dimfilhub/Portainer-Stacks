@@ -1,0 +1,17 @@
+services:
+  
+  gotify:
+    image: ghcr.io/gotify/server:latest
+    container_name: gotify
+    network_mode: mydockerbridge
+    ports:
+      - 6742:80
+    volumes:
+      - /volume2/docker/gotify:/app/data:rw
+    environment:
+      TZ: Europe/Athens
+      GOTIFY_DEFAULTUSER_NAME: xxxxxxxxxx
+      GOTIFY_DEFAULTUSER_PASS: xxxxxxxxxx
+    # labels:
+    # - "diun.enable=true"
+    restart: always

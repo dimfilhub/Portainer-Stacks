@@ -1,0 +1,38 @@
+services:
+  
+  projectsend:
+    image: lscr.io/linuxserver/projectsend:latest
+    network_mode: mydockerbridge
+    container_name: projectsend
+    environment:
+      - PUID=xxxx
+      - PGID=xxxx
+      - TZ=Europe/Athens
+      - MAX_UPLOAD=5000
+    volumes:
+      - /volume2/docker/projectsend/config:/config 
+      - /volume2/docker/projectsend/data:/data
+    ports:
+      - 8516:80
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped
+  
+  db:
+    image: mariadb
+    container_name: projectsend-mariadb
+    network_mode: mydockerbridge
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projectsend
+      MYSQL_USER: projectsend
+      MYSQL_PASSWORD: projectsend
+      TZ: Europe/Athens
+    volumes:
+      - /volume2/docker/projectsend/mariadb:/var/lib/mysql #Database Volume Goes Here
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped

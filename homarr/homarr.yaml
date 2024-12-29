@@ -1,0 +1,18 @@
+services:
+  
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    environment:
+     TZ: Europe/Athens
+    ports:
+      - '7575:7575'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /volume2/docker/homarr/configs:/app/data/configs
+      - /volume2/docker/homarr/icons:/app/public/icons
+      - /volume2/docker/homarr/data:/data
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped
+

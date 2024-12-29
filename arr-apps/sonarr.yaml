@@ -1,0 +1,21 @@
+services:
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: mydockerbridge
+    environment:
+      - PUID=xxxx
+      - PGID=xxxx 
+      - TZ=Europe/Athens 
+      - UMASK=022
+    volumes:
+      - /volume2/docker/sonarr:/config
+      - /volume1/data:/data
+    ports:
+      - 8989:8989
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

@@ -1,0 +1,33 @@
+services:
+  
+  pihole:
+    image: cbcrowe/pihole-unbound:latest
+    container_name: pihole
+    network_mode: host
+    hostname: pihole
+    domainname: pihole.local
+    environment:
+      - FTLCONF_LOCAL_IPV4= 192.168.178.200
+      - PIHOLE_UID=xxxx #CHANGE_TO_YOUR_UID
+      - PIHOLE_GID=xxxx #CHANGE_TO_YOUR_GID
+      - WEB_UID=xxxx #CHANGE_TO_YOUR_UID
+      - WEB_GID=xxxx #CHANGE_TO_YOUR_GID
+      - TZ=Europe/Athens
+      - WEBPASSWORD=xxxxxxxxxx
+      - WEB_PORT=8000 #needed in host network mode
+      # - WEBTHEME=default-light #optional choose from default-dark | default-darker | default-light | default-auto | lcars
+      - PIHOLE_DNS_=127.0.0.1#5335
+      - DNSSEC="true"
+      - DNSMASQ_LISTENING=local
+      # Following environment variables are optional for Conditional Forwarding
+      # these values are ready for Fritz!Box users like me
+      - REV_SERVER=true
+      - REV_SERVER_TARGET=192.168.178.1
+      - REV_SERVER_DOMAIN=fritz.box
+      - REV_SERVER_CIDR=192.168.178.0/24
+    volumes:
+      - /volume2/docker/pihole-unbound/pihole:/etc/pihole:rw
+      - /volume2/docker/pihole-unbound/dnsmasq.d:/etc/dnsmasq.d:rw
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped

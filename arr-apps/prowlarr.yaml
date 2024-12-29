@@ -1,0 +1,19 @@
+services:
+  
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: container:gluetun # run on the vpn container's network
+    environment:
+      - PUID=xxxx
+      - PGID=xxxx
+      - TZ=Europe/Athens
+      - UMASK=022
+    volumes:
+      - /volume2/docker/prowlarr:/config
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always
+  

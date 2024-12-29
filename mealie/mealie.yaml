@@ -1,0 +1,27 @@
+services:
+
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC2
+    container_name: mealie
+    network_mode: mydockerbridge
+    ports:
+      - "9925:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - /volume2/docker/mealie/data:/app/data/
+    environment:
+    # Set Backend ENV Variables Here
+      - ALLOW_SIGNUP=true
+      - PUID=xxxx
+      - PGID=xxxx
+      - TZ=Europe/Athens
+      - MAX_WORKERS=1
+      - WEB_CONCURRENCY=1
+      - BASE_URL=xxxxxxxxxx
+    # labels:
+    # - "diun.enable=true"
+    restart: always
+

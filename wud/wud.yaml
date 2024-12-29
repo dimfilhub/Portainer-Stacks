@@ -1,0 +1,22 @@
+services:
+
+  whatsupdocker:
+    image: getwud/wud
+    container_name: wud
+    security_opt:
+      - no-new-privileges=true
+    read_only: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /volume2/docker/wud:/store:rw
+    ports:
+      - 3000:3000
+    environment:
+      - TZ=Europe/Athens
+      - WUD_WATCHER_LOCAL_CRON=0 18 * * *
+      - WUD_WATCHER_LOCAL_WATCHATSTART=false
+      - WUD_REGISTRY_LSCR_USERNAME=xxxxxxxxx
+      - WUD_REGISTRY_LSCR_TOKEN=xxxxxxxxxx
+      - WUD_TRIGGER_GOTIFY_LOCAL_URL=xxxxxxxxxx
+      - WUD_TRIGGER_GOTIFY_LOCAL_TOKEN=xxxxxxxxxx
+      

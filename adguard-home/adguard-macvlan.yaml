@@ -1,0 +1,28 @@
+services:    
+  
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    networks:
+      macvlan:
+        ipv4_address: 192.168.178.160
+    volumes:
+      - /volume2/docker/adguard/conf:/opt/adguardhome/conf
+      - /volume2/docker/adguard/work:/opt/adguardhome/work
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always
+
+networks:
+  macvlan:
+    name: macvlan
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "192.168.178.0/24"
+          ip_range: "192.168.178.254/24"
+          gateway: "192.168.178.1"

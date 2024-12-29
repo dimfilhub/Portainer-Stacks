@@ -1,0 +1,20 @@
+services:
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: container:gluetun # run on the vpn container's network
+    environment:
+      - PUID=xxxx
+      - PGID=xxxx
+      - TZ=Europe/Athens
+      - WEBUI_PORT=8090
+      - UMASK=022
+    volumes:
+      - /volume2/docker/qbittorrent:/config
+      - /volume1/data/torrents:/data/torrents
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

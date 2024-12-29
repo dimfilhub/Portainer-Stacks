@@ -1,0 +1,64 @@
+services:
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    hostname: pi-hole
+    mac_address: d0:ca:ab:cd:ef:01
+    # cap_add: # Uncomment if you want to use Pi-Hole for DHCP
+    #   - NET_ADMIN
+    ports:
+      - 5443/tcp
+      - 53/tcp
+      - 53/udp
+      # - 67/udp # Uncomment if you want to use Pi-Hole for DHCP
+      - 8000/tcp
+      - 22/tcp
+    environment:
+      - PIHOLE_UID=xxxx #CHANGE_TO_YOUR_UID
+      - PIHOLE_GID=xxxx #CHANGE_TO_YOUR_GID
+      - WEB_UID=xxxx #CHANGE_TO_YOUR_UID
+      - WEB_GID=xxxx #CHANGE_TO_YOUR_GID
+      - TZ=Europe/Athens #CHANGE_TO_YOUR_TZ
+      - FTLCONF_LOCAL_IPV4=192.168.178.160
+      - WEBPASSWORD=xxxxxxxxxx
+      - WEB_PORT=8000
+      - DNSMASQ_LISTENING=local
+      - DNSMASQ_USER=pihole
+      - PIHOLE_DNS_=192.168.178.161;192.168.178.162
+    volumes:
+      - /volume2/docker/pihole-unbound/pihole:/etc/pihole:rw
+      - /volume2/docker/pihole-unbound/dnsmasq.d:/etc/dnsmasq.d
+      - /volume2/docker/pihole-unbound/resolv.conf:/etc/resolv.conf:ro
+    networks:
+      home:
+        ipv4_address: 192.168.178.160
+    # labels:
+    # - "diun.enable=true"
+    restart: always
+    
+  unbound:
+    container_name: unbound
+    image: mvance/unbound:latest
+    hostname: syn-unbound
+    mac_address: d0:ca:ab:cd:ef:02
+    ports:
+      - 53/tcp
+      - 53/udp
+    networks:
+      home:
+        ipv4_address: 192.168.178.161
+    # labels:
+    # - "diun.enable=true"
+    restart: always
+
+networks:
+  home:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: 192.168.178.0/24
+          gateway: 192.168.178.1
+          ip_range: 192.168.178.160/30 # 192.168.178.160 and 192.168.178.161

@@ -1,0 +1,20 @@
+services:
+
+  pingvin:
+    image: stonith404/pingvin-share
+    container_name: pingvin
+    network_mode: mydockerbridge
+    healthcheck:
+     test: curl -f http://localhost:3000/ || exit 1
+    mem_limit: 2g
+    cpu_shares: 768
+    ports:
+      - 6090:3000
+    volumes:
+      - /volume2/docker/pingvin:/opt/app/backend/data:rw
+      - /volume2/docker/pingvin/public:/opt/app/frontend/public/img:rw
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: on-failure:5

@@ -1,0 +1,22 @@
+services:
+  
+  nzbget:
+    image: nzbgetcom/nzbget:latest
+    container_name: nzbget
+    network_mode: mydockerbridge
+    environment:
+      - PUID=xxxx #CHANGE_TO_YOUR_UID
+      - PGID=xxxx #CHANGE_TO_YOUR_GID
+      - TZ=Europe/Athens #CHANGE_TO_YOUR_TZ
+      - NZBGET_USER=xxxxxxxxxx #WEBUI LOGIN
+      - NZBGET_PASS=xxxxxxxxxx #WEBUI PASSWORD
+    volumes:
+      - /volume2/docker/nzbget:/config
+      - /volume1/data/usenet:/data/usenet
+    ports:
+      - 6789:6789/tcp
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

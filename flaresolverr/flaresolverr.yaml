@@ -1,0 +1,13 @@
+services:
+  
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    network_mode: container:gluetun # run on the vpn container's network
+    environment:
+      - TZ=Europe/Athens
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

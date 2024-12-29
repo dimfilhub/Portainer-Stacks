@@ -1,0 +1,25 @@
+services:
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    network_mode: mydockerbridge
+    user: xxxx:xxxx # PUID:PGID
+    environment:
+      ROCKET_ENV: staging
+      ROCKET_PORT: 8080
+      ROCKET_WORKERS: 10
+      SIGNUPS_ALLOWED: FALSE
+      ADMIN_TOKEN: xxxxxxxxxx
+      LOG_FILE: /data/log/my.log
+      # WEBSOCKET_ENABLED: TRUE
+    volumes:
+      - /volume2/docker/vaultwarden:/data
+    ports:
+      # - 3012:3012/tcp
+      - 8122:8080/tcp
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped

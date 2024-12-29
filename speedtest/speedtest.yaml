@@ -1,0 +1,26 @@
+services:
+
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest
+    network_mode: mydockerbridge
+    ports:
+      - 8999:80
+      - 8995:443
+    environment:
+      - PUID=xxxx
+      - PGID=xxxx
+      - APP_KEY=xxxxxxxxxx
+      - DB_CONNECTION=sqlite
+      - SPEEDTEST_SCHEDULE=0 10 * * *
+      - SPEEDTEST_SERVERS=5188
+      - PRUNE_RESULTS_OLDER_THAN=30
+      # - CHART_DATETIME_FORMAT= 
+      # - DATETIME_FORMAT=
+      # - APP_TIMEZONE=
+    volumes:
+      - /volume2/docker/speedtest-tracker:/config
+      # - /path/to-custom-ssl-keys:/config/keys
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped

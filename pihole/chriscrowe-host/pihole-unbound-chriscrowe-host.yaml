@@ -1,0 +1,28 @@
+services:
+
+  pihole:
+    container_name: pihole
+    image: cbcrowe/pihole-unbound:latest
+    network_mode: host
+    hostname: pihole
+    domainname: pihole.local
+    cap_add:
+      - CAP_NET_RAW
+      - CAP_NET_BIND_SERVICE
+      - CAP_CHOWN
+    environment:
+      - PIHOLE_UID=xxxx #CHANGE_TO_YOUR_UID
+      - PIHOLE_GID=xxxx #CHANGE_TO_YOUR_GID
+      - FTLCONF_LOCAL_IPV4=192.168.178.200
+      - TZ=Europe/Athens
+      - WEB_PORT=8005
+      - WEBPASSWORD=xxxxxxxxxx
+      - DNSMASQ_USER=pihole
+      - PIHOLE_DNS_=127.0.0.1#5335
+      - DNSMASQ_LISTENING=local
+    volumes:
+      - /volume2/docker/pihole-unbound/pihole:/etc/pihole:rw
+      - /volume2/docker/pihole-unbound/dnsmasq.d:/etc/dnsmasq.d
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped

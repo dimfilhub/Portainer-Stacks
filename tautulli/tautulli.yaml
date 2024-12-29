@@ -1,0 +1,20 @@
+services:
+
+  tautulli:
+    image: linuxserver/tautulli:latest
+    container_name: tautulli
+    network_mode: mydockerbridge
+    environment:
+      - PUID=xxxx #CHANGE_TO_YOUR_UID
+      - PGID=xxxx #CHANGE_TO_YOUR_GID
+      - TZ=Europe/Athens #CHANGE_TO_YOUR_TZ
+      - UMASK=022
+    volumes:
+      - /volume2/docker/tautulli:/config
+    ports:
+      - 8181:8181
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

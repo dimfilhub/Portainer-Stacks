@@ -1,0 +1,14 @@
+services:
+    
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    network_mode: host
+    volumes:
+      - /volume2/docker/adguard/conf:/opt/adguardhome/conf
+      - /volume2/docker/adguard/work:/opt/adguardhome/work
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

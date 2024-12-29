@@ -1,0 +1,21 @@
+services:
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: mydockerbridge
+    environment:
+      - PUID=xxxx 
+      - PGID=xxxx 
+      - TZ=Europe/Athens
+      - UMASK=022
+    volumes:
+      - /volume2/docker/radarr:/config
+      - /volume1/data:/data
+    ports:
+      - 7878:7878
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    # - "diun.enable=true"
+    restart: always

@@ -1,0 +1,55 @@
+services:
+  
+  bitmagnet:
+    image: ghcr.io/bitmagnet-io/bitmagnet:v0.10.0-beta.4
+    container_name: bitmagnet
+    network_mode: container:gluetun # run on the vpn container's network
+    user: xxxx:xxxx # PUID:PGID
+    environment:
+      - POSTGRES_HOST=bitmagnet-postgres
+      - POSTGRES_PASSWORD=postgres
+    #  - TMDB_API_KEY=your_api_key
+    volumes:
+      - /volume2/docker/bitmagnet/config:/root/.config/bitmagnet
+    command:
+      - worker
+      - run
+      # Run all workers:
+      - --all
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      bitmagnet-postgres:
+        condition: service_healthy
+    # labels:
+    #   - diun.enable=false
+    restart: always
+
+  bitmagnet-postgres:
+    image: postgres:16-alpine
+    container_name: bitmagnet-postgres
+    volumes:
+      - /volume2/docker/bitmagnet/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bitmagnet
+      - PGUSER=postgres
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready
+      start_period: 20s
+      interval: 10s
+    shm_size: 1g
+    networks:
+      synobridge:
+        ipv4_address: 172.20.0.121
+    security_opt:
+      - no-new-privileges:true
+    # labels:
+    #   - diun.enable=false
+    restart: always
+    
+networks:
+  synobridge:
+    external: true

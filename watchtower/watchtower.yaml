@@ -1,0 +1,23 @@
+services:
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      - TZ=Europe/Athens
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_REVIVE_STOPPED=false
+      # - WATCHTOWER_MONITOR_ONLY=true
+      # - WATCHTOWER_SCHEDULE=0 * * * * *
+      - WATCHTOWER_SCHEDULE=0 0 15 * * 0
+      - WATCHTOWER_NOTIFICATIONS=gotify
+      - WATCHTOWER_NOTIFICATION_GOTIFY_URL=xxxxxxxxxx
+      - WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN=xxxxxxxxxx
+    # command: # add or remove the below as required
+    #   - portainer-ce
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # labels:
+    # - "diun.enable=true"
+    restart: unless-stopped

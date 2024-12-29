@@ -1,0 +1,75 @@
+services:
+  wordpress:
+    image: wordpress:php8.2
+    container_name: WordPress
+    hostname: wordpress
+    healthcheck:
+     test: curl -f http://localhost:80/ || exit 1
+    ports:
+      - 8195:80
+    depends_on:
+      db:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      phpmyadmin:
+        condition: service_healthy
+    volumes:
+      - /volume2/docker/wordpress:/var/www/html:rw
+      - /volume2/docker/wordpress/upload.ini:/usr/local/etc/php/conf.d/upload.ini:rw
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: xxxx
+      WORDPRESS_DB_PASSWORD: xxxx
+      WORDPRESS_DB_NAME: wp1_db
+    # labels:
+    # - "diun.enable=true"
+    restart: on-failure:5
+
+  db:
+    image: mariadb:jammy
+    container_name: WordPress-DB
+    security_opt:
+      - no-new-privileges:true
+    hostname: wordpress-db
+    environment:
+      MYSQL_DATABASE: wp1_db
+      MYSQL_USER: xxxx
+      MYSQL_PASSWORD: xxxx
+      MYSQL_ROOT_PASSWORD: rootpass
+      TZ: Europe/Athens
+    volumes:
+      - /volume2/docker/wordpress/db:/var/lib/mysql:rw
+    # labels:
+    # - "diun.enable=true"
+    restart: on-failure:5
+
+  redis:
+    image: redis
+    hostname: wordpress-redis
+    container_name: WordPress-REDIS
+    user: xxxx:xxxx
+    healthcheck:
+     test: ["CMD-SHELL", "redis-cli ping || exit 1"]
+    volumes:
+      - /volume2/docker/wordpress/redis:/data:rw
+    environment:
+      TZ: Europe/Athens
+    # labels:
+    # - "diun.enable=true"
+    restart: on-failure:5
+      
+  phpmyadmin:
+    image: phpmyadmin
+    hostname: wordpress-phpmyadmin
+    healthcheck:
+     test: curl -f http://localhost:80/ || exit 1
+    container_name: WordPress-phpMyAdmin
+    ports:
+      - 2500:80
+    environment:
+     PMA_HOST: wordpress-db
+     PMA_PORT: 3306
+    # labels:
+    # - "diun.enable=true"
+    restart: on-failure:5
